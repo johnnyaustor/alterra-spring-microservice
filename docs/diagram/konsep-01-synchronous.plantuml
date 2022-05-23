@@ -1,0 +1,18 @@
+@startuml
+title Create Order Process
+
+autonumber
+actor Client as client
+
+client -> ORDER : [POST] Create Order
+activate client
+activate ORDER
+ORDER -> CUSTOMER : [POST] validate customer
+activate CUSTOMER
+CUSTOMER --> ORDER : Response
+deactivate CUSTOMER
+ORDER -> ORDER : Insert Order
+ORDER --> client : Response
+deactivate ORDER
+deactivate client
+@enduml

@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: customer
+          uri: http://localhost:7100
+          #uri: lb://CUSTOMER
+          predicates:
+            - Path=/customers/**
+        - id: order
+          uri: http://localhost:7200
+          #uri: lb://ORDER
+          predicates:
+            - Path=/orders/**

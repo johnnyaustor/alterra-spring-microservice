@@ -1,0 +1,27 @@
+@startuml
+
+title Create Order Process Asynchronous Service
+autonumber
+
+actor Client as client
+participant ORDER
+control "Async Service" as ASYNC
+participant CUSTOMER
+
+client -> ORDER : [POST]\nCreate Order
+activate client
+activate ORDER
+ORDER -> ORDER : Insert Order "Pending"
+ORDER -> ASYNC : Validate Customer
+activate ASYNC
+ORDER --> client : Response
+deactivate ORDER
+deactivate client
+
+ASYNC -> CUSTOMER : Validate Customer
+activate CUSTOMER
+
+CUSTOMER -> ASYNC : Response Validate Customer
+deactivate CUSTOMER
+ASYNC -> ASYNC : Update Order "Approve"
+@enduml

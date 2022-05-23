@@ -1,0 +1,34 @@
+@startuml
+
+title Create Order Process Asynchronous
+autonumber
+
+actor Client as client
+participant ORDER
+queue KAFKA
+participant CUSTOMER
+
+client -> ORDER : [POST]\nCreate Order
+activate client
+activate ORDER
+ORDER -> ORDER : Insert Order Pending
+ORDER -> KAFKA : [PRODUCE]\nValidate Customer
+activate KAFKA
+ORDER --> client : Response
+deactivate ORDER
+deactivate client
+
+KAFKA -> CUSTOMER : [LISTEN]\nValidate Customer
+deactivate KAFKA
+activate CUSTOMER
+
+CUSTOMER -> KAFKA : [PRODUCE]\nResponse Validate Customer
+deactivate CUSTOMER
+activate KAFKA
+
+KAFKA -> ORDER : [LISTEN]\nResponse Validate Customer
+deactivate KAFKA
+activate ORDER
+ORDER -> ORDER : Update Order Approve
+
+@enduml

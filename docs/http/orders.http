@@ -1,0 +1,47 @@
+GET http://localhost:7200/orders/customer-server-info
+
+###
+http://localhost:7200/orders
+
+###Order with filter
+http://localhost:7200/orders?uid=1
+
+###Create Order - Invalid
+POST http://localhost:7200/orders/create
+Content-Type: application/json
+
+{
+  "name": "Baju",
+  "qty": 3,
+  "uid": 3
+}
+
+###Create Order
+POST http://localhost:7200/orders/create
+Content-Type: application/json
+
+{
+  "name": "Baju",
+  "qty": 2,
+  "uid": 1
+}
+
+###Create Order Async Service
+POST http://localhost:7200/orders/create-async
+Content-Type: application/json
+
+{
+  "name": "Jubah",
+  "qty": 3,
+  "uid": 1
+}
+
+###Create Order Async Messaging
+POST http://localhost:7200/orders/create-async-messaging
+Content-Type: application/json
+
+{
+  "name": "Kemeja",
+  "qty": 1,
+  "uid": 1
+}

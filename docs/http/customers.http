@@ -1,0 +1,14 @@
+### List Customer
+GET http://localhost:7100/customers
+
+### Detail Customer
+GET http://localhost:7100/customers/1
+
+### Detail Customer Not Found
+GET http://localhost:7100/customers/100
+
+###
+GET http://localhost:7100/customers/produce
+
+###Server Info
+GET http://localhost:7100/customers/server-info

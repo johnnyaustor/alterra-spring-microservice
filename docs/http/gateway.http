@@ -1,0 +1,9 @@
+### GET Customer
+GET http://localhost:8080/customers/
+
+### GET Customer
+GET http://localhost:8080/customers/server-info
+
+
+### GET ORDER
+GET http://localhost:8080/orders/
