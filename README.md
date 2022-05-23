@@ -18,11 +18,15 @@ lalu jalankan menggunakan docker-compose
 docker-compose up -d
 ```
 
-## Cara Menjalankan
+## Urutan Menjalankan Service
 1. Start `Registry Server` folder registry
 2. Start semua service (customer, order, gateway)
 
 ## Endpoint
+
+### Registry
+
+Host: http://localhost:8761
 
 ### Gateway
 
