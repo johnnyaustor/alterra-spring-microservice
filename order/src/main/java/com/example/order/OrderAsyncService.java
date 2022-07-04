@@ -3,6 +3,7 @@ package com.example.order;
 import com.example.order.client.CustomerClient;
 import com.example.order.model.Customer;
 import com.example.order.model.Order;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static com.example.order.Data.orders;
 
@@ -23,14 +25,20 @@ public class OrderAsyncService {
     @Async
     public void validateCustomer(Integer uid) throws InterruptedException {
         log.info("action get customer with uid: {}", uid);
-        ResponseEntity<Customer> customerResponseEntity = customerClient.get(uid);
-        Thread.sleep(10_000);
-        if (!customerResponseEntity.getStatusCode().is2xxSuccessful()) {
-            log.info("customer notfound");
+        try {
+            ResponseEntity<Customer> customerResponseEntity = customerClient.get(uid);
+            TimeUnit.SECONDS.sleep(10);
+            if (!customerResponseEntity.getStatusCode().is2xxSuccessful()) {
+                log.info("customer notfound");
+                this.updateStatus(uid, Order.OrderStatus.REJECTED);
+            } else {
+                log.info("update status order");
+                this.updateOrder(customerResponseEntity.getBody());
+            }
+        } catch (FeignException e) {
+            log.error("order rejected! because internal server error", e);
+            TimeUnit.SECONDS.sleep(5);
             this.updateStatus(uid, Order.OrderStatus.REJECTED);
-        } else {
-            log.info("update status order");
-            this.updateOrder(customerResponseEntity.getBody());
         }
         log.info("end action get customer");
     }
